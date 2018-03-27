@@ -1,2 +1,1 @@
-# pcl
-Parser combinator library for java
+# Parser combinator library
