@@ -20,7 +20,7 @@ public class RecursiveDescentParser<R> implements Parser<R> {
      *
      * @param root root ast mode, i.e. a main derivation rule.
      */
-    RecursiveDescentParser(AST<R> root) {
+    public RecursiveDescentParser(AST<R> root) {
         compiledAST = gerCompiler().compile(root);
     }
 

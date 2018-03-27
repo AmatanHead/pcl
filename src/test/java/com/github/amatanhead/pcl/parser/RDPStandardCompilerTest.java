@@ -1,6 +1,5 @@
 package com.github.amatanhead.pcl.parser;
 
-import com.github.amatanhead.pcl.combinators.ast.AST;
 import com.github.amatanhead.pcl.combinators.ast.NDefer;
 import com.github.amatanhead.pcl.errors.ParsingError;
 import com.github.amatanhead.pcl.errors.TokenizationError;
