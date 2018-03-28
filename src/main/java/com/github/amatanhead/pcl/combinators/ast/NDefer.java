@@ -10,6 +10,10 @@ import com.github.amatanhead.pcl.combinators.NodeType;
 public class NDefer<R> extends AST<R> {
     private AST<R> deferred;
 
+    public NDefer() {
+        this.deferred = null;
+    }
+
     public AST<R> getDeferred() {
         return deferred;
     }

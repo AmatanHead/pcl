@@ -3,7 +3,6 @@ package com.github.amatanhead.pcl.combinators;
 import com.github.amatanhead.pcl.combinators.ast.*;
 import com.github.amatanhead.pcl.token.Token;
 import com.github.amatanhead.pcl.token.TokenKind;
-import com.github.amatanhead.pcl.utils.GenericTuple;
 import com.github.amatanhead.pcl.utils.Maybe;
 
 import java.util.ArrayList;
@@ -62,100 +61,16 @@ public final class Combinators {
      * In other languages, this is usually implemented as an operator `+`.
      */
     @SafeVarargs
-    static public AST<ArrayList<Object>> seq(AST<Object>... as) {
-        return new NSeq(new ArrayList<>(Arrays.asList(as)));
-    }
-
-    /**
-     * A special case for sequence of two tokens. Used to ensure type-safety and spare users from
-     * casting objects around.
-     *
-     * @see #seq(AST[])
-     */
-    @SuppressWarnings("unchecked")
-    static public <R0, R1> AST<GenericTuple.Tuple2<R0, R1>> seq1(AST<R0> a0, AST<R1> a1) {
-        return seq((AST<Object>) a0, (AST<Object>) a1).bind(array -> new GenericTuple.Tuple2<>((R0) array.get(0), (R1) array.get(1)));
-    }
-
-    /**
-     * A special case for sequence of three tokens. Used to ensure type-safety and spare users from
-     * casting objects around.
-     *
-     * @see #seq(AST[])
-     */
-    @SuppressWarnings("unchecked")
-    static public <R0, R1, R2> AST<GenericTuple.Tuple3<R0, R1, R2>> seq1(AST<R0> a0, AST<R1> a1, AST<R2> a2) {
-        return seq((AST<Object>) a0, (AST<Object>) a1, (AST<Object>) a2).bind(array -> new GenericTuple.Tuple3<>((R0) array.get(0), (R1) array.get(1), (R2) array.get(2)));
-    }
-
-    /**
-     * A special case for sequence of four tokens. Used to ensure type-safety and spare users from
-     * casting objects around.
-     *
-     * @see #seq(AST[])
-     */
-    @SuppressWarnings("unchecked")
-    static public <R0, R1, R2, R3> AST<GenericTuple.Tuple4<R0, R1, R2, R3>> seq1(AST<R0> a0, AST<R1> a1, AST<R2> a2, AST<R3> a3) {
-        return seq((AST<Object>) a0, (AST<Object>) a1, (AST<Object>) a2, (AST<Object>) a3).bind(array -> new GenericTuple.Tuple4<>((R0) array.get(0), (R1) array.get(1), (R2) array.get(2), (R3) array.get(3)));
-    }
-
-    /**
-     * A special case for sequence of five tokens. Used to ensure type-safety and spare users from
-     * casting objects around.
-     *
-     * @see #seq(AST[])
-     */
-    @SuppressWarnings("unchecked")
-    static public <R0, R1, R2, R3, R4> AST<GenericTuple.Tuple5<R0, R1, R2, R3, R4>> seq1(AST<R0> a0, AST<R1> a1, AST<R2> a2, AST<R3> a3, AST<R4> a4) {  // woooo!
-        return seq((AST<Object>) a0, (AST<Object>) a1, (AST<Object>) a2, (AST<Object>) a3, (AST<Object>) a4).bind(array -> new GenericTuple.Tuple5<>((R0) array.get(0), (R1) array.get(1), (R2) array.get(2), (R3) array.get(3), (R4) array.get(5)));
+    static public <T> AST<ArrayList<T>> seq(AST<? extends T>... as) {
+        return new NSeq<>(new ArrayList<>(Arrays.asList(as)));
     }
 
     /**
      * A parser which matches either of the given parsers.
      */
     @SafeVarargs
-    static public AST<Object> or(AST<Object>... as) {
-        return new NOr(new ArrayList<>(Arrays.asList(as)));
-    }
-
-    /**
-     * A special case for matching one of two parsers.
-     *
-     * @see #or(AST[])
-     */
-    @SuppressWarnings("unchecked")
-    static public <R> AST<R> or1(AST<R> a0, AST<R> a1) {
-        return (AST<R>) or((AST<Object>) a0, (AST<Object>) a1);
-    }
-
-    /**
-     * A special case for matching one of three parsers.
-     *
-     * @see #or(AST[])
-     */
-    @SuppressWarnings("unchecked")
-    static public <R> AST<R> or1(AST<R> a0, AST<R> a1, AST<R> a2) {
-        return (AST<R>) or((AST<Object>) a0, (AST<Object>) a1, (AST<Object>) a2);
-    }
-
-    /**
-     * A special case for matching one of four parsers.
-     *
-     * @see #or(AST[])
-     */
-    @SuppressWarnings("unchecked")
-    static public <R> AST<R> or1(AST<R> a0, AST<R> a1, AST<R> a2, AST<R> a3) {
-        return (AST<R>) or((AST<Object>) a0, (AST<Object>) a1, (AST<Object>) a2, (AST<Object>) a3);
-    }
-
-    /**
-     * A special case for matching one of five parsers.
-     *
-     * @see #or(AST[])
-     */
-    @SuppressWarnings("unchecked")
-    static public <R> AST<R> or1(AST<R> a0, AST<R> a1, AST<R> a2, AST<R> a3, AST<R> a4) {
-        return (AST<R>) or((AST<Object>) a0, (AST<Object>) a1, (AST<Object>) a2, (AST<Object>) a3, (AST<Object>) a4);
+    static public <T> AST<T> or(AST<? extends T>... as) {
+        return new NOr<>(new ArrayList<>(Arrays.asList(as)));
     }
 
     /**

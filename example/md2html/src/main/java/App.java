@@ -1,4 +1,3 @@
-import com.github.amatanhead.pcl.combinators.Combinators;
 import com.github.amatanhead.pcl.combinators.ast.AST;
 import com.github.amatanhead.pcl.combinators.ast.NDefer;
 import com.github.amatanhead.pcl.errors.ParsingError;
@@ -11,7 +10,6 @@ import com.github.amatanhead.pcl.token.Token;
 import com.github.amatanhead.pcl.token.TokenKind;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.regex.Pattern;
 
@@ -40,14 +38,14 @@ public class App {
     private static Parser<String> makeParser() {
         NDefer<String> inlines = defer();
 
-        AST<String> emphasis = seq1(op_("//"), inlines, op_("//")).bind(t -> "<em>" + t.t2 + "</em>");
-        AST<String> double_emphasis = seq1(op_("**"), inlines, op_("**")).bind(t -> "<strong>" + t.t2 + "</strong>");
-        AST<String> triple_emphasis = seq1(op_("__"), inlines, op_("__")).bind(t -> "<u>" + t.t2 + "</u>");
-        AST<String> strike = seq1(op_("~~"), inlines, op_("~~")).bind(t -> "<s>" + t.t2 + "</s>");
+        AST<String> emphasis = seq(op_("//"), inlines, op_("//")).bind(t -> "<em>" + t.get(1) + "</em>");
+        AST<String> double_emphasis = seq(op_("**"), inlines, op_("**")).bind(t -> "<strong>" + t.get(1) + "</strong>");
+        AST<String> triple_emphasis = seq(op_("__"), inlines, op_("__")).bind(t -> "<u>" + t.get(1) + "</u>");
+        AST<String> strike = seq(op_("~~"), inlines, op_("~~")).bind(t -> "<s>" + t.get(1) + "</s>");
 
         inlines.setDeferred(
                 many(
-                        or1(
+                        or(
                                 triple_emphasis,
                                 double_emphasis,
                                 emphasis,
@@ -57,7 +55,7 @@ public class App {
                 ).bind(a -> a.stream().reduce("", String::concat))
         );
 
-        AST<String> md = seq1(inlines, a(TokenKind.EOF)).bind(t -> t.t1);
+        AST<String> md = seq(inlines, a(TokenKind.EOF)).bind(t -> (String) t.get(1));
 
         return new RecursiveDescentParser<>(md);
     }

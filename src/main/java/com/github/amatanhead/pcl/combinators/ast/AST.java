@@ -15,10 +15,10 @@ abstract public class AST<R> {
      * Bind this combinator to the given functor.
      *
      * @param functor result modifier.
-     * @param <NT>    return type of the functor.
-     * @return new ast node with the return type `NT`.
+     * @param <NR>    return type of the functor.
+     * @return new ast node with the return type `NR`.
      */
-    public <NT> AST<NT> bind(Function<R, NT> functor) {
+    public <NR> AST<NR> bind(Function<R, NR> functor) {
         return new NApply<>(this, functor);
     }
 

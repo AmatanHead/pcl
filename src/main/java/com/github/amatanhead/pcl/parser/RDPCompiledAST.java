@@ -11,7 +11,7 @@ public interface RDPCompiledAST {
     /**
      * Actual parsing implementation. Given a {@link TokenStreamStar}, parse it and return parsing result.
      *
-     * @param tokenStream tokenized input that is gping to be parsed.
+     * @param tokenStream tokenized input that is going to be parsed.
      * @return result of the parsing.
      * @throws TokenizationError error if input stream cannot be tokenized. This error may arise in the process
      *                           of parsing in case of lazy tokenization.

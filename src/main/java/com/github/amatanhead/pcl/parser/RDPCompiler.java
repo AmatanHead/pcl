@@ -9,5 +9,5 @@ public interface RDPCompiler {
     /**
      * Compile root AST node, return something that can parse a token stream.
      */
-    RDPCompiledAST compile(AST root);
+    RDPCompiledAST compile(AST<?> root);
 }

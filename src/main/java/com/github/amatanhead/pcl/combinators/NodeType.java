@@ -1,6 +1,7 @@
 package com.github.amatanhead.pcl.combinators;
 
 import com.github.amatanhead.pcl.combinators.ast.AST;
+import com.github.amatanhead.pcl.parser.RDPStandardCompiler;
 
 /**
  * Enum which contains all types of AST nodes that form parsing notation.
@@ -57,7 +58,7 @@ public enum NodeType {
      * <p>
      * Standard parser have no idea what to do with such nodes, so it'll throw an error. Users, however, are free to
      * derive from the standard parser and add support for such nodes by overloading
-     * {@link com.github.amatanhead.pcl.parser.RDPStandardCompiler#compileCustom(AST)}.
+     * {@link com.github.amatanhead.pcl.parser.RDPStandardCompiler#compileCustom(AST, RDPStandardCompiler.CompilationState)}
      * Alternatively, they can implement their own parser from scratch.
      */
     Custom,

@@ -165,7 +165,7 @@ public class RDPStandardCompilerTest {
     @Test
     public void testDefer() throws TokenizationError, ParsingError {
         NDefer<Token> deferred = defer();
-        deferred.setDeferred(or1(a(TOK), deferred));
+        deferred.setDeferred(or(a(TOK1), deferred));
 
         RDPCompiledAST ast = compiler.compile(deferred);
         RDPResult result;

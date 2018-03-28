@@ -4,20 +4,19 @@ import com.github.amatanhead.pcl.combinators.NodeType;
 
 import java.util.ArrayList;
 
-
 /**
  * AST node representing `or` parser combinator.
  *
  * @see com.github.amatanhead.pcl.combinators.Combinators#or(AST[])
  */
-public class NOr extends AST<Object> {
-    private final ArrayList<AST<Object>> underlying;
+public class NOr<R> extends AST<R> {
+    private final ArrayList<AST<? extends R>> underlying;
 
-    public NOr(ArrayList<AST<Object>> underlying) {
+    public NOr(ArrayList<AST<? extends R>> underlying) {
         this.underlying = underlying;
     }
 
-    public ArrayList<AST<Object>> getUnderlying() {
+    public ArrayList<AST<? extends R>> getUnderlying() {
         return underlying;
     }
 

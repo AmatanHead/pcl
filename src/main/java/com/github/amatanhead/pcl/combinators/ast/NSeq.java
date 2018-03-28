@@ -9,14 +9,14 @@ import java.util.ArrayList;
  *
  * @see com.github.amatanhead.pcl.combinators.Combinators#seq(AST[])
  */
-public class NSeq extends AST<ArrayList<Object>> {
-    private final ArrayList<AST<Object>> underlying;
+public class NSeq<R> extends AST<ArrayList<R>> {
+    private final ArrayList<AST<? extends R>> underlying;
 
-    public NSeq(ArrayList<AST<Object>> underlying) {
+    public NSeq(ArrayList<AST<? extends R>> underlying) {
         this.underlying = underlying;
     }
 
-    public ArrayList<AST<Object>> getUnderlying() {
+    public ArrayList<AST<? extends R>> getUnderlying() {
         return underlying;
     }
 

@@ -25,11 +25,19 @@ public class RDPStandardCompiler implements RDPCompiler {
         }
     }
 
-    public RDPCompiledAST compile(AST root) {
+    public RDPCompiledAST compile(AST<?> root) {
         return compile(root, new CompilationState());
     }
 
-    public RDPCompiledAST compile(AST root, CompilationState compilationState) {
+    protected RDPCompiledAST compile(AST<?> root, CompilationState compilationState) {
+        // Note on type casing. From `AST<T>`, even though we know its return type, we can't restore full types of
+        // its ancestors (i.e. underlying nodes). We'd fail on the fist `Apply` node if we were to try. Given that,
+        // and the fact than all functors in `Apply` nodes are type-checked during AST creation (hence they'll work
+        // if we don't screw up return types of other nodes), we cast all nodes to `AST<Objects>` and proceed with
+        // simple objects. This grants us the required flexibility to build parsers. We, however, must ensure that
+        // each compiled node produces the right output type. That is, `some` must produce tokens, `maybe` must wrap
+        // its results into maybe, `or`, `seq` and `many` must wrap results of underlying nodes into `ArrayList`.
+
         if (compilationState.compiled.containsKey(root)) {
             return compilationState.compiled.get(root);
         }
@@ -38,28 +46,49 @@ public class RDPStandardCompiler implements RDPCompiler {
 
         switch (root.getType()) {
             case Apply:
-                if (root instanceof NApply) { compiled = compileApply((NApply) root, compilationState); }
+                if (root instanceof NApply) {
+                    // noinspection unchecked
+                    compiled = compileApply((NApply<Object, Object>) root, compilationState);
+                }
                 break;
             case Many:
-                if (root instanceof NMany) { compiled = compileMany((NMany) root, compilationState); }
+                if (root instanceof NMany) {
+                    // noinspection unchecked
+                    compiled = compileMany((NMany<Object>) root, compilationState);
+                }
                 break;
             case Maybe:
-                if (root instanceof NMaybe) { compiled = compileMaybe((NMaybe) root, compilationState); }
+                if (root instanceof NMaybe) {
+                    // noinspection unchecked
+                    compiled = compileMaybe((NMaybe<Object>) root, compilationState);
+                }
                 break;
             case Or:
-                if (root instanceof NOr) { compiled = compileOr((NOr) root, compilationState); }
+                if (root instanceof NOr) {
+                    // noinspection unchecked
+                    compiled = compileOr((NOr<Object>) root, compilationState);
+                }
                 break;
             case Seq:
-                if (root instanceof NSeq) { compiled = compileSeq((NSeq) root, compilationState); }
+                if (root instanceof NSeq) {
+                    // noinspection unchecked
+                    compiled = compileSeq((NSeq<Object>) root, compilationState);
+                }
                 break;
             case Some:
-                if (root instanceof NSome) { compiled = compileSome((NSome) root, compilationState); }
+                if (root instanceof NSome) {
+                    compiled = compileSome((NSome) root, compilationState);
+                }
                 break;
             case Custom:
-                compiled = compileCustom(root, compilationState);
+                // noinspection unchecked
+                compiled = compileCustom((AST<Object>) root, compilationState);
                 break;
             case Defer:
-                if (root instanceof NDefer) { compiled = compileDefer((NDefer) root, compilationState); }
+                if (root instanceof NDefer) {
+                    // noinspection unchecked
+                    compiled = compileDefer((NDefer<Object>) root, compilationState);
+                }
                 break;
         }
 
@@ -74,7 +103,8 @@ public class RDPStandardCompiler implements RDPCompiler {
     /**
      * Compile an `apply` node.
      */
-    protected CompiledApply compileApply(NApply node, CompilationState compilationState) {
+    @SuppressWarnings("unused")
+    protected CompiledApply compileApply(NApply<Object, Object> node, CompilationState compilationState) {
         RDPCompiledAST underlying = compile(node.getUnderlying(), compilationState);
         return new CompiledApply(underlying, node.getFunctor());
     }
@@ -82,7 +112,8 @@ public class RDPStandardCompiler implements RDPCompiler {
     /**
      * Compile a `many` node.
      */
-    protected CompiledMany compileMany(NMany node, CompilationState compilationState) {
+    @SuppressWarnings("unused")
+    protected CompiledMany compileMany(NMany<?> node, CompilationState compilationState) {
         RDPCompiledAST underlying = compile(node.getUnderlying(), compilationState);
         return new CompiledMany(underlying, node.getMin(), node.getMax());
     }
@@ -90,7 +121,8 @@ public class RDPStandardCompiler implements RDPCompiler {
     /**
      * Compile a `maybe` node.
      */
-    protected CompiledMaybe compileMaybe(NMaybe node, CompilationState compilationState) {
+    @SuppressWarnings("unused")
+    protected CompiledMaybe compileMaybe(NMaybe<?> node, CompilationState compilationState) {
         RDPCompiledAST underlying = compile(node.getUnderlying(), compilationState);
         return new CompiledMaybe(underlying);
     }
@@ -98,7 +130,8 @@ public class RDPStandardCompiler implements RDPCompiler {
     /**
      * Compile an `or` node.
      */
-    protected CompiledOr compileOr(NOr node, CompilationState compilationState) {
+    @SuppressWarnings("unused")
+    protected CompiledOr compileOr(NOr<?> node, CompilationState compilationState) {
         ArrayList<RDPCompiledAST> underlying = node.getUnderlying().stream()
                 .map(ast -> compile(ast, compilationState))
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -108,7 +141,8 @@ public class RDPStandardCompiler implements RDPCompiler {
     /**
      * Compile a `seq` node.
      */
-    protected CompiledSeq compileSeq(NSeq node, CompilationState compilationState) {
+    @SuppressWarnings("unused")
+    protected CompiledSeq compileSeq(NSeq<?> node, CompilationState compilationState) {
         ArrayList<RDPCompiledAST> underlying = node.getUnderlying().stream()
                 .map(ast -> compile(ast, compilationState))
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -126,7 +160,8 @@ public class RDPStandardCompiler implements RDPCompiler {
     /**
      * Compile a `defer` node.
      */
-    protected RDPCompiledAST compileDefer(NDefer node, CompilationState compilationState) {
+    @SuppressWarnings("unused")
+    protected RDPCompiledAST compileDefer(NDefer<?> node, CompilationState compilationState) {
         if (node.getDeferred() == null) {
             throw new IllegalArgumentException("deferred node is not defined");
         }
@@ -144,7 +179,7 @@ public class RDPStandardCompiler implements RDPCompiler {
      * Compile a `custom` node. Throws an error by default. Override to add support for custom nodes.
      */
     @SuppressWarnings("unused")
-    protected RDPCompiledAST compileCustom(AST node, CompilationState compilationState) {
+    protected RDPCompiledAST compileCustom(AST<Object> node, CompilationState compilationState) {
         throw new IllegalArgumentException(
                 "this parser does not support custom AST nodes; " +
                         "you're free to derive from this parser and add support for custom AST nodes");
@@ -157,15 +192,14 @@ public class RDPStandardCompiler implements RDPCompiler {
      */
     static protected class CompiledApply implements RDPCompiledAST {
         protected final RDPCompiledAST underlying;
-        protected final Function functor;
+        protected final Function<Object, Object> functor;
 
-        CompiledApply(RDPCompiledAST underlying, Function functor) {
+        CompiledApply(RDPCompiledAST underlying, Function<Object, Object> functor) {
             this.underlying = underlying;
             this.functor = functor;
         }
 
         @Override
-        @SuppressWarnings("unchecked")  // type safety guaranteed by AST constructors.
         public RDPResult parse(TokenStreamStar tokenStream) throws TokenizationError, ParsingError {
             RDPResult parsingResult = underlying.parse(tokenStream);
 
@@ -224,14 +258,13 @@ public class RDPStandardCompiler implements RDPCompiler {
         }
 
         @Override
-        @SuppressWarnings("unchecked")  // type safety guaranteed by AST constructors.
         public RDPResult parse(TokenStreamStar tokenStream) throws TokenizationError, ParsingError {
             RDPResult parsingResult = underlying.parse(tokenStream);
 
             if (parsingResult.isSuccess()) {
-                parsingResult.setResult(new Maybe(parsingResult.getResult()));
+                parsingResult.setResult(new Maybe<>(parsingResult.getResult()));
             } else {
-                parsingResult.setResult(new Maybe());
+                parsingResult.setResult(new Maybe<>());
                 parsingResult.setSuccess(true);
             }
 
@@ -337,7 +370,6 @@ public class RDPStandardCompiler implements RDPCompiler {
         }
 
         @Override
-        @SuppressWarnings("unchecked")  // type safety guaranteed by AST constructors.
         public RDPResult parse(TokenStreamStar tokenStream) throws TokenizationError, ParsingError {
             return underlying.parse(tokenStream);
         }

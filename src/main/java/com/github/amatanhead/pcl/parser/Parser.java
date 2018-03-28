@@ -17,7 +17,7 @@ public interface Parser<R> {
      * apply them as it goes or build an internal representation of parsing results and apply bound functions
      * to this representation in the very end of parsing.
      *
-     * @param tokenStream tokenized input that is gping to be parsed.
+     * @param tokenStream tokenized input that is going to be parsed.
      * @return result of the root AST node.
      * @throws TokenizationError error if input stream cannot be tokenized. This error may arise in the process
      *                           of parsing in case of lazy tokenization.
