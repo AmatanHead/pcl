@@ -15,8 +15,8 @@ import java.util.Objects;
 public class Token {
     private final TokenKind tokenKind;
     private final String data;
-    private long row;
-    private long column;
+    private final long row;
+    private final long column;
 
     /**
      * Construct a token with an empty string as its data and zero position.

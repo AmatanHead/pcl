@@ -3,7 +3,6 @@ package com.github.amatanhead.pcl.token;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class TokenTest {
     private final TokenKind EOF = TokenKind.EOF;

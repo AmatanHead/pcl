@@ -18,7 +18,8 @@ import static com.github.amatanhead.pcl.combinators.Combinators.*;
 import static org.junit.Assert.*;
 
 public class RDPStandardCompilerTest {
-    private static final TokenKind TOK = new TokenKind("TOK");
+    private static final TokenKind TOK1 = new TokenKind("TOK1");
+    private static final TokenKind TOK2 = new TokenKind("TOK2");
 
     private RDPStandardCompiler compiler;
 
@@ -37,26 +38,26 @@ public class RDPStandardCompilerTest {
 
     @Test
     public void testA() throws TokenizationError, ParsingError {
-        RDPCompiledAST ast = compiler.compile(a(TOK));
+        RDPCompiledAST ast = compiler.compile(a(TOK1));
         RDPResult result;
 
-        result = ast.parse(makeStream(new Token(TOK, "data")));
+        result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), new Token(TOK, "data"));
+        assertEquals(result.getResult(), new Token(TOK1, "data"));
 
         result = ast.parse(makeStream(new Token(TokenKind.EOF, "")));
         assertFalse(result.isSuccess());
-        assertEquals(result.getResult(), null);
+        assertNull(result.getResult());
     }
 
     @Test
     public void testAn() throws TokenizationError, ParsingError {
-        RDPCompiledAST ast = compiler.compile(an(TOK));
+        RDPCompiledAST ast = compiler.compile(an(TOK1));
         RDPResult result;
 
-        result = ast.parse(makeStream(new Token(TOK, "data")));
+        result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), new Token(TOK, "data"));
+        assertEquals(result.getResult(), new Token(TOK1, "data"));
 
         result = ast.parse(makeStream(new Token(TokenKind.EOF, "")));
         assertFalse(result.isSuccess());
@@ -65,28 +66,28 @@ public class RDPStandardCompilerTest {
 
     @Test
     public void testSome() throws TokenizationError, ParsingError {
-        RDPCompiledAST ast = compiler.compile(some(token -> token.getTokenKind() == TOK && token.getData().equals("data")));
+        RDPCompiledAST ast = compiler.compile(some(token -> token.getTokenKind() == TOK1 && token.getData().equals("data")));
         RDPResult result;
 
-        result = ast.parse(makeStream(new Token(TOK, "data")));
+        result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), new Token(TOK, "data"));
+        assertEquals(result.getResult(), new Token(TOK1, "data"));
 
         result = ast.parse(makeStream(new Token(TokenKind.EOF, "data")));
         assertFalse(result.isSuccess());
         assertEquals(result.getResult(), null);
 
-        result = ast.parse(makeStream(new Token(TOK, "")));
+        result = ast.parse(makeStream(new Token(TOK1, "")));
         assertFalse(result.isSuccess());
         assertEquals(result.getResult(), null);
     }
 
     @Test
     public void testApply() throws TokenizationError, ParsingError {
-        RDPCompiledAST ast = compiler.compile(a(TOK).bind(Token::getData));
+        RDPCompiledAST ast = compiler.compile(a(TOK1).bind(Token::getData));
         RDPResult result;
 
-        result = ast.parse(makeStream(new Token(TOK, "data")));
+        result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
         assertEquals(result.getResult(), "data");
 
@@ -97,55 +98,55 @@ public class RDPStandardCompilerTest {
 
     @Test
     public void testMany() throws TokenizationError, ParsingError {
-        RDPCompiledAST ast = compiler.compile(many(a(TOK)));
+        RDPCompiledAST ast = compiler.compile(many(a(TOK1)));
         RDPResult result;
 
         result = ast.parse(makeStream());
         assertTrue(result.isSuccess());
         assertEquals(result.getResult(), makeArray());
 
-        result = ast.parse(makeStream(new Token(TOK, "data")));
+        result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), makeArray(new Token(TOK, "data")));
+        assertEquals(result.getResult(), makeArray(new Token(TOK1, "data")));
 
-        result = ast.parse(makeStream(new Token(TOK, "data"), new Token(TOK, "data2")));
+        result = ast.parse(makeStream(new Token(TOK1, "data"), new Token(TOK1, "data2")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), makeArray(new Token(TOK, "data"), new Token(TOK, "data2")));
+        assertEquals(result.getResult(), makeArray(new Token(TOK1, "data"), new Token(TOK1, "data2")));
 
-        result = ast.parse(makeStream(new Token(TOK, "data"), new Token(TOK, "data2"), new Token(TokenKind.EOF, "")));
+        result = ast.parse(makeStream(new Token(TOK1, "data"), new Token(TOK1, "data2"), new Token(TokenKind.EOF, "")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), makeArray(new Token(TOK, "data"), new Token(TOK, "data2")));
+        assertEquals(result.getResult(), makeArray(new Token(TOK1, "data"), new Token(TOK1, "data2")));
     }
 
     @Test
     public void testManyRestricted() throws TokenizationError, ParsingError {
-        RDPCompiledAST ast = compiler.compile(many(a(TOK), 1, 2));
+        RDPCompiledAST ast = compiler.compile(many(a(TOK1), 1, 2));
         RDPResult result;
 
         result = ast.parse(makeStream());
         assertFalse(result.isSuccess());
 
-        result = ast.parse(makeStream(new Token(TOK, "data")));
+        result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), makeArray(new Token(TOK, "data")));
+        assertEquals(result.getResult(), makeArray(new Token(TOK1, "data")));
 
-        result = ast.parse(makeStream(new Token(TOK, "data"), new Token(TOK, "data2")));
+        result = ast.parse(makeStream(new Token(TOK1, "data"), new Token(TOK1, "data2")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), makeArray(new Token(TOK, "data"), new Token(TOK, "data2")));
+        assertEquals(result.getResult(), makeArray(new Token(TOK1, "data"), new Token(TOK1, "data2")));
 
-        result = ast.parse(makeStream(new Token(TOK, "data"), new Token(TOK, "data2"), new Token(TokenKind.EOF, "")));
+        result = ast.parse(makeStream(new Token(TOK1, "data"), new Token(TOK1, "data2"), new Token(TokenKind.EOF, "")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), makeArray(new Token(TOK, "data"), new Token(TOK, "data2")));
+        assertEquals(result.getResult(), makeArray(new Token(TOK1, "data"), new Token(TOK1, "data2")));
     }
 
     @Test
     public void testMaybe() throws TokenizationError, ParsingError {
-        RDPCompiledAST ast = compiler.compile(maybe(a(TOK)));
+        RDPCompiledAST ast = compiler.compile(maybe(a(TOK1)));
         RDPResult result;
 
-        result = ast.parse(makeStream(new Token(TOK, "data")));
+        result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), new Maybe<Token>(new Token(TOK, "data")));
+        assertEquals(result.getResult(), new Maybe<>(new Token(TOK1, "data")));
 
         result = ast.parse(makeStream(new Token(TokenKind.EOF, "")));
         assertTrue(result.isSuccess());
@@ -154,12 +155,38 @@ public class RDPStandardCompilerTest {
 
     @Test
     public void testOr() throws TokenizationError, ParsingError {
+        RDPCompiledAST ast = compiler.compile(or(a(TOK1), a(TOK2)));
+        RDPResult result;
 
+        result = ast.parse(makeStream(new Token(TOK1, "data")));
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult(), new Token(TOK1, "data"));
+
+        result = ast.parse(makeStream(new Token(TOK2, "data")));
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult(), new Token(TOK2, "data"));
+
+        result = ast.parse(makeStream(new Token(TokenKind.EOF, "")));
+        assertFalse(result.isSuccess());
     }
 
     @Test
     public void testSeq() throws TokenizationError, ParsingError {
+        RDPCompiledAST ast = compiler.compile(seq(a(TOK1), a(TOK2)));
+        RDPResult result;
 
+        result = ast.parse(makeStream(new Token(TOK1, "data"), new Token(TOK2, "data2")));
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult(), makeArray(new Token(TOK1, "data"), new Token(TOK2, "data2")));
+
+        result = ast.parse(makeStream(new Token(TOK1, "data")));
+        assertFalse(result.isSuccess());
+
+        result = ast.parse(makeStream(new Token(TOK2, "data2")));
+        assertFalse(result.isSuccess());
+
+        result = ast.parse(makeStream(new Token(TOK1, "data"), new Token(TokenKind.EOF, "")));
+        assertFalse(result.isSuccess());
     }
 
     @Test
@@ -170,8 +197,8 @@ public class RDPStandardCompilerTest {
         RDPCompiledAST ast = compiler.compile(deferred);
         RDPResult result;
 
-        result = ast.parse(makeStream(new Token(TOK, "data")));
+        result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), new Token(TOK, "data"));
+        assertEquals(result.getResult(), new Token(TOK1, "data"));
     }
 }

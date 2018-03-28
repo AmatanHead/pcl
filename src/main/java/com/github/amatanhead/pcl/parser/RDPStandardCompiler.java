@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  */
 public class RDPStandardCompiler implements RDPCompiler {
     protected static class CompilationState {
-        public Map<AST, RDPCompiledAST> compiled;
+        public final Map<AST, RDPCompiledAST> compiled;
 
         CompilationState() {
             compiled = new HashMap<>();
@@ -344,7 +344,7 @@ public class RDPStandardCompiler implements RDPCompiler {
             Token token = tokenStream.input();
 
             if (predicate.apply(token)) {
-                return new RDPResult(true,token);
+                return new RDPResult(true, token);
             } else {
                 tokenStream.unput();
                 return new RDPResult(false, null);
@@ -359,10 +359,6 @@ public class RDPStandardCompiler implements RDPCompiler {
         protected RDPCompiledAST underlying;
 
         public CompiledDefer() {
-        }
-
-        public RDPCompiledAST getUnderlying() {
-            return underlying;
         }
 
         public void setUnderlying(RDPCompiledAST underlying) {
