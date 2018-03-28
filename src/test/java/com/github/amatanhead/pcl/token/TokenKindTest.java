@@ -9,11 +9,11 @@ public class TokenKindTest {
     public void constructors() {
         TokenKind tokenKind = new TokenKind("Name");
 
-        assertEquals(tokenKind.getName(), "Name");
+        assertEquals("Name", tokenKind.getName());
     }
 
     @Test
     public void predefinedTokenKinds() {
-        assertTrue(TokenKind.EOF.getName().equals("EOF"));
+        assertEquals("EOF", TokenKind.EOF.getName());
     }
 }

@@ -72,32 +72,33 @@ public class StandardConversionsTest {
         return StandardConversions.toStream(iterator);
     }
 
-    static private void assertToken(Token actual, TokenKind expectedKind) {
-        assertToken(null, actual, expectedKind);
+    static private void assertToken(String message, TokenKind expectedKind, Token actual) {
+        assertEquals(message, expectedKind, actual.getTokenKind());
     }
 
-    static private void assertToken(String message, Token actual, TokenKind expectedKind) {
-        assertEquals(message, actual.getTokenKind(), expectedKind);
+    static private void assertToken(TokenKind expectedKind, Token actual) {
+        assertEquals(expectedKind, actual.getTokenKind());
     }
 
-    static private void assertToken(Token actual, TokenKind expectedKind, String expectedData) {
-        assertToken(null, actual, expectedKind, expectedData);
+    static private void assertToken(String message, TokenKind expectedKind, String expectedData, Token actual) {
+        assertEquals(message, expectedKind, actual.getTokenKind());
+        assertEquals(message, expectedData, actual.getData());
     }
 
-    static private void assertToken(String message, Token actual, TokenKind expectedKind, String expectedData) {
-        assertEquals(message, actual.getTokenKind(), expectedKind);
-        assertEquals(message, actual.getData(), expectedData);
+    static private void assertToken(TokenKind expectedKind, String expectedData, Token actual) {
+        assertEquals(expectedKind, actual.getTokenKind());
+        assertEquals(expectedData, actual.getData());
     }
 
     static private void testTokenStreamInput(TokenStream tokenStream) throws TokenizationError {
 
-        assertToken(tokenStream.input(), TOK1, "Data 1");
+        assertToken(TOK1, "Data 1", tokenStream.input());
 
-        assertToken(tokenStream.input(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.input());
 
-        assertToken(tokenStream.input(), TOK3, "Data 3");
+        assertToken(TOK3, "Data 3", tokenStream.input());
 
-        assertToken(tokenStream.input(), EOF);
+        assertToken(EOF, tokenStream.input());
 
 
         try {
@@ -111,61 +112,61 @@ public class StandardConversionsTest {
     static private void testTokenStreamCanInput(TokenStream tokenStream) throws TokenizationError {
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.input(), TOK1, "Data 1");
+        assertToken(TOK1, "Data 1", tokenStream.input());
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.input(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.input());
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.input(), TOK3, "Data 3");
+        assertToken(TOK3, "Data 3", tokenStream.input());
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.input(), EOF);
+        assertToken(EOF, tokenStream.input());
         assertFalse(tokenStream.canInput());
     }
 
     static private void testTokenStreamNUnput(TokenStreamN tokenStream) throws TokenizationError {
 
-        assertToken(tokenStream.input(), TOK1, "Data 1");
+        assertToken(TOK1, "Data 1", tokenStream.input());
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.unput(new Token(BT, "Backtracked 1")), BT, "Backtracked 1");
+        assertToken(BT, "Backtracked 1", tokenStream.unput(new Token(BT, "Backtracked 1")));
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.input(), BT, "Backtracked 1");
+        assertToken(BT, "Backtracked 1", tokenStream.input());
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.input(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.input());
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.unput(new Token(BT, "Backtracked 2")), BT, "Backtracked 2");
+        assertToken(BT, "Backtracked 2", tokenStream.unput(new Token(BT, "Backtracked 2")));
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.unput(new Token(BT, "Backtracked 3")), BT, "Backtracked 3");
+        assertToken(BT, "Backtracked 3", tokenStream.unput(new Token(BT, "Backtracked 3")));
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.input(), BT, "Backtracked 3");
+        assertToken(BT, "Backtracked 3", tokenStream.input());
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.input(), BT, "Backtracked 2");
+        assertToken(BT, "Backtracked 2", tokenStream.input());
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.input(), TOK3, "Data 3");
+        assertToken(TOK3, "Data 3", tokenStream.input());
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.input(), EOF);
+        assertToken(EOF, tokenStream.input());
         assertFalse(tokenStream.canInput());
 
-        assertToken(tokenStream.unput(new Token(BT, "Backtracked 4")), BT, "Backtracked 4");
+        assertToken(BT, "Backtracked 4", tokenStream.unput(new Token(BT, "Backtracked 4")));
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.unput(new Token(BT, "Backtracked 5")), BT, "Backtracked 5");
+        assertToken(BT, "Backtracked 5", tokenStream.unput(new Token(BT, "Backtracked 5")));
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.input(), BT, "Backtracked 5");
+        assertToken(BT, "Backtracked 5", tokenStream.input());
         assertTrue(tokenStream.canInput());
 
-        assertToken(tokenStream.input(), BT, "Backtracked 4");
+        assertToken(BT, "Backtracked 4", tokenStream.input());
         assertFalse(tokenStream.canInput());
 
 
@@ -190,23 +191,23 @@ public class StandardConversionsTest {
         assertTrue(tokenStream.canInput());
         assertFalse(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK1, "Data 1");
+        assertToken(TOK1, "Data 1", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.unput(), TOK1, "Data 1");
+        assertToken(TOK1, "Data 1", tokenStream.unput());
         assertTrue(tokenStream.canInput());
         assertFalse(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK1, "Data 1");
+        assertToken(TOK1, "Data 1", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.unput(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.unput());
         assertTrue(tokenStream.canInput());
         assertFalse(tokenStream.canUnput());
 
@@ -220,23 +221,23 @@ public class StandardConversionsTest {
         assertTrue(tokenStream.canInput());
         assertFalse(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK3, "Data 3");
+        assertToken(TOK3, "Data 3", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), EOF);
+        assertToken(EOF, tokenStream.input());
         assertFalse(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.unput(), EOF);
+        assertToken(EOF, tokenStream.unput());
         assertTrue(tokenStream.canInput());
         assertFalse(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), EOF);
+        assertToken(EOF, tokenStream.input());
         assertFalse(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
@@ -249,11 +250,11 @@ public class StandardConversionsTest {
         assertFalse(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.unput(), EOF);
+        assertToken(EOF, tokenStream.unput());
         assertTrue(tokenStream.canInput());
         assertFalse(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), EOF);
+        assertToken(EOF, tokenStream.input());
         assertFalse(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
@@ -280,11 +281,11 @@ public class StandardConversionsTest {
         assertTrue(tokenStream.canInput());
         assertFalse(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK1, "Data 1");
+        assertToken(TOK1, "Data 1", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.unput(), TOK1, "Data 1");
+        assertToken(TOK1, "Data 1", tokenStream.unput());
         assertTrue(tokenStream.canInput());
         assertFalse(tokenStream.canUnput());
 
@@ -298,27 +299,27 @@ public class StandardConversionsTest {
         assertTrue(tokenStream.canInput());
         assertFalse(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK1, "Data 1");
+        assertToken(TOK1, "Data 1", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK3, "Data 3");
+        assertToken(TOK3, "Data 3", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.unput(), TOK3, "Data 3");
+        assertToken(TOK3, "Data 3", tokenStream.unput());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.unput(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.unput());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.unput(), TOK1, "Data 1");
+        assertToken(TOK1, "Data 1", tokenStream.unput());
         assertTrue(tokenStream.canInput());
         assertFalse(tokenStream.canUnput());
 
@@ -331,27 +332,27 @@ public class StandardConversionsTest {
         assertTrue(tokenStream.canInput());
         assertFalse(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK1, "Data 1");
+        assertToken(TOK1, "Data 1", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK3, "Data 3");
+        assertToken(TOK3, "Data 3", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), EOF);
+        assertToken(EOF, tokenStream.input());
         assertFalse(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.unput(), EOF);
+        assertToken(EOF, tokenStream.unput());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), EOF);
+        assertToken(EOF, tokenStream.input());
         assertFalse(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
@@ -364,11 +365,11 @@ public class StandardConversionsTest {
         assertFalse(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.unput(), EOF);
+        assertToken(EOF, tokenStream.unput());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), EOF);
+        assertToken(EOF, tokenStream.input());
         assertFalse(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
@@ -389,15 +390,15 @@ public class StandardConversionsTest {
         assertTrue(tokenStream.canInput());
         assertFalse(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK1, "Data 1");
+        assertToken(TOK1, "Data 1", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.unput(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.unput());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
@@ -405,15 +406,15 @@ public class StandardConversionsTest {
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK3, "Data 3");
+        assertToken(TOK3, "Data 3", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), EOF);
+        assertToken(EOF, tokenStream.input());
         assertFalse(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
@@ -434,31 +435,31 @@ public class StandardConversionsTest {
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK3, "Data 3");
+        assertToken(TOK3, "Data 3", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), EOF);
+        assertToken(EOF, tokenStream.input());
         assertFalse(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.unput(), EOF);
+        assertToken(EOF, tokenStream.unput());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.unput(), TOK3, "Data 3");
+        assertToken(TOK3, "Data 3", tokenStream.unput());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.unput(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.unput());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
@@ -466,7 +467,7 @@ public class StandardConversionsTest {
         assertTrue(tokenStream.canInput());
         assertFalse(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK1, "Data 1");
+        assertToken(TOK1, "Data 1", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
@@ -491,15 +492,15 @@ public class StandardConversionsTest {
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK2, "Data 2");
+        assertToken(TOK2, "Data 2", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), TOK3, "Data 3");
+        assertToken(TOK3, "Data 3", tokenStream.input());
         assertTrue(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 
-        assertToken(tokenStream.input(), EOF);
+        assertToken(EOF, tokenStream.input());
         assertFalse(tokenStream.canInput());
         assertTrue(tokenStream.canUnput());
 

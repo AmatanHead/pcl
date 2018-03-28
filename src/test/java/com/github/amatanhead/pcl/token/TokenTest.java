@@ -12,36 +12,36 @@ public class TokenTest {
         Token token;
 
         token = new Token(EOF);
-        assertEquals(token.getTokenKind(), EOF);
-        assertEquals(token.getData(), "");
-        assertEquals(token.getRow(), 0);
-        assertEquals(token.getColumn(), 0);
+        assertEquals(EOF, token.getTokenKind());
+        assertEquals("", token.getData());
+        assertEquals(0, token.getRow());
+        assertEquals(0, token.getColumn());
 
         token = new Token(EOF, "Data");
-        assertEquals(token.getTokenKind(), EOF);
-        assertEquals(token.getData(), "Data");
-        assertEquals(token.getRow(), 0);
-        assertEquals(token.getColumn(), 0);
+        assertEquals(EOF, token.getTokenKind());
+        assertEquals("Data", token.getData());
+        assertEquals(0, token.getRow());
+        assertEquals(0, token.getColumn());
 
         token = new Token(EOF, "Data 2", 10, 25);
-        assertEquals(token.getTokenKind(), EOF);
-        assertEquals(token.getData(), "Data 2");
-        assertEquals(token.getRow(), 10);
-        assertEquals(token.getColumn(), 25);
+        assertEquals(EOF, token.getTokenKind());
+        assertEquals("Data 2", token.getData());
+        assertEquals(10, token.getRow());
+        assertEquals(25, token.getColumn());
 
         Token defaultToken = new Token(EOF, "Data X", 10, 25);
 
         token = new Token(defaultToken);
-        assertEquals(token.getTokenKind(), EOF);
-        assertEquals(token.getData(), "Data X");
-        assertEquals(token.getRow(), 10);
-        assertEquals(token.getColumn(), 25);
+        assertEquals(EOF, token.getTokenKind());
+        assertEquals("Data X", token.getData());
+        assertEquals(10, token.getRow());
+        assertEquals(25, token.getColumn());
 
         token = new Token(defaultToken, 50, 60);
-        assertEquals(token.getTokenKind(), EOF);
-        assertEquals(token.getData(), "Data X");
-        assertEquals(token.getRow(), 50);
-        assertEquals(token.getColumn(), 60);
+        assertEquals(EOF, token.getTokenKind());
+        assertEquals("Data X", token.getData());
+        assertEquals(50, token.getRow());
+        assertEquals(60, token.getColumn());
     }
 
     @Test

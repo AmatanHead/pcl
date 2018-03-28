@@ -43,7 +43,7 @@ public class RDPStandardCompilerTest {
 
         result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), new Token(TOK1, "data"));
+        assertEquals(new Token(TOK1, "data"), result.getResult());
 
         result = ast.parse(makeStream(new Token(TokenKind.EOF, "")));
         assertFalse(result.isSuccess());
@@ -57,11 +57,11 @@ public class RDPStandardCompilerTest {
 
         result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), new Token(TOK1, "data"));
+        assertEquals(new Token(TOK1, "data"), result.getResult());
 
         result = ast.parse(makeStream(new Token(TokenKind.EOF, "")));
         assertFalse(result.isSuccess());
-        assertEquals(result.getResult(), null);
+        assertNull(result.getResult());
     }
 
     @Test
@@ -71,15 +71,15 @@ public class RDPStandardCompilerTest {
 
         result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), new Token(TOK1, "data"));
+        assertEquals(new Token(TOK1, "data"), result.getResult());
 
         result = ast.parse(makeStream(new Token(TokenKind.EOF, "data")));
         assertFalse(result.isSuccess());
-        assertEquals(result.getResult(), null);
+        assertNull(result.getResult());
 
         result = ast.parse(makeStream(new Token(TOK1, "")));
         assertFalse(result.isSuccess());
-        assertEquals(result.getResult(), null);
+        assertNull(result.getResult());
     }
 
     @Test
@@ -89,11 +89,11 @@ public class RDPStandardCompilerTest {
 
         result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), "data");
+        assertEquals("data", result.getResult());
 
         result = ast.parse(makeStream(new Token(TokenKind.EOF, "")));
         assertFalse(result.isSuccess());
-        assertEquals(result.getResult(), null);
+        assertNull(result.getResult());
     }
 
     @Test
@@ -103,19 +103,19 @@ public class RDPStandardCompilerTest {
 
         result = ast.parse(makeStream());
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), makeArray());
+        assertEquals(makeArray(), result.getResult());
 
         result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), makeArray(new Token(TOK1, "data")));
+        assertEquals(makeArray(new Token(TOK1, "data")), result.getResult());
 
         result = ast.parse(makeStream(new Token(TOK1, "data"), new Token(TOK1, "data2")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), makeArray(new Token(TOK1, "data"), new Token(TOK1, "data2")));
+        assertEquals(makeArray(new Token(TOK1, "data"), new Token(TOK1, "data2")), result.getResult());
 
         result = ast.parse(makeStream(new Token(TOK1, "data"), new Token(TOK1, "data2"), new Token(TokenKind.EOF, "")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), makeArray(new Token(TOK1, "data"), new Token(TOK1, "data2")));
+        assertEquals(makeArray(new Token(TOK1, "data"), new Token(TOK1, "data2")), result.getResult());
     }
 
     @Test
@@ -128,15 +128,15 @@ public class RDPStandardCompilerTest {
 
         result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), makeArray(new Token(TOK1, "data")));
+        assertEquals(makeArray(new Token(TOK1, "data")), result.getResult());
 
         result = ast.parse(makeStream(new Token(TOK1, "data"), new Token(TOK1, "data2")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), makeArray(new Token(TOK1, "data"), new Token(TOK1, "data2")));
+        assertEquals(makeArray(new Token(TOK1, "data"), new Token(TOK1, "data2")), result.getResult());
 
         result = ast.parse(makeStream(new Token(TOK1, "data"), new Token(TOK1, "data2"), new Token(TokenKind.EOF, "")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), makeArray(new Token(TOK1, "data"), new Token(TOK1, "data2")));
+        assertEquals(makeArray(new Token(TOK1, "data"), new Token(TOK1, "data2")), result.getResult());
     }
 
     @Test
@@ -146,11 +146,11 @@ public class RDPStandardCompilerTest {
 
         result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), new Maybe<>(new Token(TOK1, "data")));
+        assertEquals(new Maybe<>(new Token(TOK1, "data")), result.getResult());
 
         result = ast.parse(makeStream(new Token(TokenKind.EOF, "")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), new Maybe<Token>());
+        assertEquals(new Maybe<Token>(), result.getResult());
     }
 
     @Test
@@ -160,11 +160,11 @@ public class RDPStandardCompilerTest {
 
         result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), new Token(TOK1, "data"));
+        assertEquals(new Token(TOK1, "data"), result.getResult());
 
         result = ast.parse(makeStream(new Token(TOK2, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), new Token(TOK2, "data"));
+        assertEquals(new Token(TOK2, "data"), result.getResult());
 
         result = ast.parse(makeStream(new Token(TokenKind.EOF, "")));
         assertFalse(result.isSuccess());
@@ -177,7 +177,7 @@ public class RDPStandardCompilerTest {
 
         result = ast.parse(makeStream(new Token(TOK1, "data"), new Token(TOK2, "data2")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), makeArray(new Token(TOK1, "data"), new Token(TOK2, "data2")));
+        assertEquals(makeArray(new Token(TOK1, "data"), new Token(TOK2, "data2")), result.getResult());
 
         result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertFalse(result.isSuccess());
@@ -199,6 +199,6 @@ public class RDPStandardCompilerTest {
 
         result = ast.parse(makeStream(new Token(TOK1, "data")));
         assertTrue(result.isSuccess());
-        assertEquals(result.getResult(), new Token(TOK1, "data"));
+        assertEquals(new Token(TOK1, "data"), result.getResult());
     }
 }

@@ -44,9 +44,11 @@ public class RegexpTextLexerTest {
 
         TokenStream stream = lexer.tokenize("asd dsa");
 
-        assertEquals(stream.input(), new Token(TOK1, "asd", 0, 0));
-        assertEquals(stream.input(), new Token(TOK1, "dsa", 0, 4));
-        assertEquals(stream.input(), new Token(TokenKind.EOF, "", 0, 7));
+        assertEquals(new Token(TOK1, "asd", 0, 0), stream.input());
+        assertEquals(new Token(TOK1, "dsa", 0, 4), stream.input());
+
+        assertEquals(new Token(TokenKind.EOF, "", 0, 7), stream.input());
+
         assertFalse(stream.canInput());
     }
 
@@ -59,9 +61,11 @@ public class RegexpTextLexerTest {
 
         TokenStream stream = lexer.tokenize("asd dsa");
 
-        assertEquals(stream.input(), new Token(TOK1, "asd", 0, 0));
-        assertEquals(stream.input(), new Token(TOK1, "dsa", 0, 4));
-        assertEquals(stream.input(), new Token(TokenKind.EOF, "", 0, 7));
+        assertEquals(new Token(TOK1, "asd", 0, 0), stream.input());
+        assertEquals(new Token(TOK1, "dsa", 0, 4), stream.input());
+
+        assertEquals(new Token(TokenKind.EOF, "", 0, 7), stream.input());
+
         assertFalse(stream.canInput());
     }
 
@@ -74,10 +78,10 @@ public class RegexpTextLexerTest {
 
         TokenStream stream = lexer.tokenize("asd dsa");
 
-        assertEquals(stream.input(), new Token(TOK1, "asd", 0, 0));
-        assertEquals(stream.input(), new Token(TOK1, "dsa", 0, 4));
+        assertEquals(new Token(TOK1, "asd", 0, 0), stream.input());
+        assertEquals(new Token(TOK1, "dsa", 0, 4), stream.input());
 
-        assertEquals(stream.input(), new Token(TokenKind.EOF, "", 0, 7));
+        assertEquals(new Token(TokenKind.EOF, "", 0, 7), stream.input());
 
         assertFalse(stream.canInput());
     }
@@ -91,22 +95,22 @@ public class RegexpTextLexerTest {
 
         TokenStream stream = lexer.tokenize(text);
 
-        assertEquals(stream.input(), new Token(NAME, "TEST_VAR_1", 0, 0));
-        assertEquals(stream.input(), new Token(EQ_SIGN, "=", 0,  11));
-        assertEquals(stream.input(), new Token(NUMBER, "10", 0,  13));
-        assertEquals(stream.input(), new Token(NEWLINE, "\n", 0,  15));
+        assertEquals(new Token(NAME, "TEST_VAR_1", 0, 0), stream.input());
+        assertEquals(new Token(EQ_SIGN, "=", 0,  11), stream.input());
+        assertEquals(new Token(NUMBER, "10", 0,  13), stream.input());
+        assertEquals(new Token(NEWLINE, "\n", 0,  15), stream.input());
 
-        assertEquals(stream.input(), new Token(NAME, "TEST_VAR_2", 1, 0));
-        assertEquals(stream.input(), new Token(EQ_SIGN, "=", 1,  11));
-        assertEquals(stream.input(), new Token(STRING, "'test \\' string'", 1,  13));
-        assertEquals(stream.input(), new Token(NEWLINE, "\n", 1,  29));
+        assertEquals(new Token(NAME, "TEST_VAR_2", 1, 0), stream.input());
+        assertEquals(new Token(EQ_SIGN, "=", 1,  11), stream.input());
+        assertEquals(new Token(STRING, "'test \\' string'", 1,  13), stream.input());
+        assertEquals(new Token(NEWLINE, "\n", 1,  29), stream.input());
 
-        assertEquals(stream.input(), new Token(NAME, "TEST_VAR_3", 2, 0));
-        assertEquals(stream.input(), new Token(EQ_SIGN, "=", 2,  11));
-        assertEquals(stream.input(), new Token(STRING, "\"test \\\" string\"", 2,  13));
-        assertEquals(stream.input(), new Token(NEWLINE, "\n", 2,  29));
+        assertEquals(new Token(NAME, "TEST_VAR_3", 2, 0), stream.input());
+        assertEquals(new Token(EQ_SIGN, "=", 2,  11), stream.input());
+        assertEquals(new Token(STRING, "\"test \\\" string\"", 2,  13), stream.input());
+        assertEquals(new Token(NEWLINE, "\n", 2,  29), stream.input());
 
-        assertEquals(stream.input(), new Token(TokenKind.EOF, "", 3, 0));
+        assertEquals(new Token(TokenKind.EOF, "", 3, 0), stream.input());
 
         assertFalse(stream.canInput());
     }
@@ -119,16 +123,16 @@ public class RegexpTextLexerTest {
 
         TokenStream stream = lexer.tokenize(text);
 
-        assertEquals(stream.input(), new Token(NAME, "TEST_VAR_1", 0, 0));
-        assertEquals(stream.input(), new Token(EQ_SIGN, "=", 0,  11));
-        assertEquals(stream.input(), new Token(NUMBER, "10", 0,  13));
-        assertEquals(stream.input(), new Token(NEWLINE, "\n", 0,  15));
+        assertEquals(new Token(NAME, "TEST_VAR_1", 0, 0), stream.input());
+        assertEquals(new Token(EQ_SIGN, "=", 0,  11), stream.input());
+        assertEquals(new Token(NUMBER, "10", 0,  13), stream.input());
+        assertEquals(new Token(NEWLINE, "\n", 0,  15), stream.input());
 
-        assertEquals(stream.input(), new Token(NAME, "TEST_VAR_2", 1, 0));
-        assertEquals(stream.input(), new Token(EQ_SIGN, "=", 1,  11));
+        assertEquals(new Token(NAME, "TEST_VAR_2", 1, 0), stream.input());
+        assertEquals(new Token(EQ_SIGN, "=", 1,  11), stream.input());
 
         try {
-            assertEquals(stream.input(), new Token(STRING, "'test \\' string'", 1, 13));
+            assertEquals(new Token(STRING, "'test \\' string'", 1, 13), stream.input());
             fail("should've fail on malformed input");
         } catch (TokenizationError error) {
             // ok
@@ -145,10 +149,10 @@ public class RegexpTextLexerTest {
 
         TokenStream stream = lexer.tokenize("asd dsa");
 
-        assertEquals(stream.input(), new Token(TOK1, "asd", 0, 0));
-        assertEquals(stream.input(), new Token(TOK1, "dsa", 0, 4));
+        assertEquals(new Token(TOK1, "asd", 0, 0), stream.input());
+        assertEquals(new Token(TOK1, "dsa", 0, 4), stream.input());
 
-        assertEquals(stream.input(), new Token(TokenKind.EOF, "", 0, 7));
+        assertEquals(new Token(TokenKind.EOF, "", 0, 7), stream.input());
 
         assertFalse(stream.canInput());
     }

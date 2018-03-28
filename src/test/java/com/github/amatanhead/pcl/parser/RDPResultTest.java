@@ -10,13 +10,13 @@ public class RDPResultTest {
         RDPResult result;
 
         result = new RDPResult(true, "result");
-        assertEquals(result.isSuccess(), true);
-        assertEquals(result.getResult(), "result");
-        assertEquals(result.getErrorMessage(), null);
+        assertTrue(result.isSuccess());
+        assertEquals("result", result.getResult());
+        assertNull(result.getErrorMessage());
 
         result = new RDPResult("error");
-        assertEquals(result.isSuccess(), false);
-        assertEquals(result.getResult(), null);
-        assertEquals(result.getErrorMessage(), "error");
+        assertFalse(result.isSuccess());
+        assertNull(result.getResult());
+        assertEquals("error", result.getErrorMessage());
     }
 }

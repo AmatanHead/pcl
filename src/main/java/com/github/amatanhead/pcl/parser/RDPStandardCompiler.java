@@ -97,7 +97,7 @@ public class RDPStandardCompiler implements RDPCompiler {
             return compiled;
         }
 
-        throw new IllegalArgumentException("AST node class doesnt't match its getType()");
+        throw new IllegalArgumentException("AST node class doesn't match its getType()");
     }
 
     /**

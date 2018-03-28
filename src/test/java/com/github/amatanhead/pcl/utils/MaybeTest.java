@@ -8,7 +8,7 @@ public class MaybeTest {
 
     @Test
     public void getVal() {
-        assertEquals(new Maybe<>("s").getVal(), "s");
+        assertEquals("s", new Maybe<>("s").getVal());
         assertNull(new Maybe<String>().getVal());
     }
 
@@ -24,11 +24,11 @@ public class MaybeTest {
 
         m = (new Maybe<>("string")).map(String::length);
         assertTrue(m.hasVal());
-        assertEquals(m.getVal(), (Integer) 6);
+        assertEquals((Integer) 6, m.getVal());
 
         m = (new Maybe<String>()).map(String::length);
         assertFalse(m.hasVal());
-        assertEquals(m.getVal(), null);
+        assertNull(m.getVal());
     }
 
     @Test
